@@ -339,8 +339,8 @@ los datos una vez de los archivos. \n Para recargar, reinicia la aplicación.')
         pais = input("Escoger pais: \n")
         respuesta = controller.getMostLiked_porCategoriaPais(catalog, categoria_id, pais, tamaño)
         tiempo = respuesta[1]
-        #memoria = respuesta[2]
-        memoria = 0
+        memoria = respuesta[2]
+        #memoria = 0
         mas_likeados = respuesta[0]
         contador = 0
         for video in lt.iterator(mas_likeados):

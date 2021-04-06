@@ -282,12 +282,12 @@ def getMostLiked_porCategoriaPais(catalog, categoria_id, pais, n:int):
     videos_cate = ObtenerVideosDistintos(videos_cate)
     sortVideos(videos_cate, 'merge', 'likes')
 #-------------------------------------------
-    #stop_memory = getMemory()
+    stop_memory = getMemory()
     stop_time = getTime()
     tracemalloc.stop()
 
     delta_time = stop_time - start_time
-    #delta_memory = deltaMemory(start_memory, stop_memory)
+    delta_memory = deltaMemory(start_memory, stop_memory)
 
     return videos_cate, delta_time, delta_memory
 #quedó perfecta
