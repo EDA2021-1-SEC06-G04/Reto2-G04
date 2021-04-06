@@ -47,7 +47,7 @@ def loadData(catalog, size_videos: int, estructura='ARRAY_LIST'):
     """
     Carga los libros en la estructura de datos
     """
-    controller.loadData(catalog, size_videos)
+    return controller.loadData(catalog, size_videos)
 
 
 
@@ -97,12 +97,13 @@ while True:
             cantidad_datos = int(cantidad_datos)
             if cantidad_datos >= 375942:
                 print("Espera mientras se cargan todos los datos, recuerda que el archivo Large tiene {} videos".format(str(375942)))
-            time_1 = time.process_time()
+            
             catalog = initCatalog(estructura)
-            loadData(catalog, cantidad_datos)
-            time_2 = time.process_time()
+            answer = loadData(catalog, cantidad_datos)
+            tiempo = answer[0]
+            memoria = answer[1]
             print('Videos cargados: ' + str(lt.size(catalog['videos'])))
-            print('Milisegundos de carga :{}'.format(str((time_2-time_1)*1000)))
+            
             print('Categorias cargadas: ' + str(mp.size(catalog['VideosPorCategoriasId'])))
             print('Las categorias cargadas son :')
             posicion_imprimir = 1
@@ -119,6 +120,8 @@ while True:
             for pais in lt.iterator(catalog['paises']):
                 print(str(contador_paises),':',pais)
                 contador_paises += 1
+            print("Tiempo [ms]: ", f"{tiempo:.3f}", "  ||  ",
+              "Memoria [kB]: ", f"{memoria:.3f}")
         else:
             print('Los datos ya han sido cargados, recuerda que el programa solo tiene permitido cargar\
 los datos una vez de los archivos. \n Para recargar, reinicia la aplicación.')
@@ -318,7 +321,7 @@ los datos una vez de los archivos. \n Para recargar, reinicia la aplicación.')
                 categoria_id = id_presente[1]
             else:
                 print("Por favor ingresa una categoria disponible.")
-        n = lt.size(controller.subListVideos_porCategoria(catalog, categoria_id))
+        n = lt.size(controller.subListVideos_porCategoria(catalog, categoria_id)[0])
         print("Hay {} videos en la categoria".format(str(n)))
         print('Cuatos videos deseas procesar:\n')
         ha_escogido_tamaño = False
@@ -336,19 +339,22 @@ los datos una vez de los archivos. \n Para recargar, reinicia la aplicación.')
                 ha_escogido_tamaño_mostrar = True
             else:
                 print("Recuerda que organizaras {} videos ".format(str(tamaño)))
-        time_1 = time.process_time()
-        mas_likeados = controller.getMostLiked_porCategoria(catalog, categoria_id, tamaño)
-        time_2 = time.process_time()
+        
+        respuesta = controller.getMostLiked_porCategoria(catalog, categoria_id, pais, tamaño)
+        tiempo = respuesta[1]
+        #memoria = respuesta[2]
+        memoria = 0
+        mas_likeados = respuesta[0]
         contador = 0
         for video in lt.iterator(mas_likeados):
             contador += 1
-            print(str(contador)+': '+'Titulo: '+(video['title']) + 'Likes: ' + str(video['likes']))
+            print(str(contador)+': '+'Titulo: '+(video['title']) + ',  Likes: ' + str(video['likes']))
             if contador >= tamaño_mostrar:
                 break
-        print('Milisegundos de carga :{}'.format(str((time_2-time_1)*1000)))
 
         
-        
+        print("Tiempo [ms]: ", f"{tiempo:.3f}", "  ||  ",
+              "Memoria [kB]: ", f"{memoria:.3f}")
     
     else:
         sys.exit(0)
