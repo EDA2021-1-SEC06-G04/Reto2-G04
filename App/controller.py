@@ -25,10 +25,42 @@ import model
 import csv
 from DISClib.ADT import list as lt
 from datetime import datetime
+import time
+import tracemalloc
 
 """
 El controlador se encarga de mediar entre la vista y el modelo.
 """
+
+#funciones de time y tracemalloc:
+def getTime():
+    """
+    devuelve el instante tiempo de procesamiento en milisegundos
+    """
+    return float(time.perf_counter()*1000)
+
+
+def getMemory():
+    """
+    toma una muestra de la memoria alocada en instante de tiempo
+    """
+    return tracemalloc.take_snapshot()
+
+
+def deltaMemory(start_memory, stop_memory):
+    """
+    calcula la diferencia en memoria alocada del programa entre dos
+    instantes de tiempo y devuelve el resultado en bytes (ej.: 2100.0 B)
+    """
+    memory_diff = stop_memory.compare_to(start_memory, "filename")
+    delta_memory = 0.0
+
+    # suma de las diferencias en uso de memoria
+    for stat in memory_diff:
+        delta_memory = delta_memory + stat.size_diff
+    # de Byte -> kByte
+    delta_memory = delta_memory/1024.0
+    return delta_memory
 
 # Inicialización del Catálogo de videos
 def initCatalog(estructura):
@@ -44,9 +76,27 @@ def loadData(catalog, size_videos: int):
     Carga los datos de los archivos y cargar los datos en la
     estructura de datos
     """
+    #medir tiempo y memoria:
+    delta_time = -1.0
+    delta_memory = -1.0
+
+    tracemalloc.start()
+    start_time = getTime()
+    start_memory = getMemory()
+#   -----------------------------------  
     loadCategorias(catalog)
     loadVideos(catalog, size_videos)
     loadPaises(catalog)
+#   -----------------------------------  
+
+    stop_memory = getMemory()
+    stop_time = getTime()
+    tracemalloc.stop()
+
+    delta_time = stop_time - start_time
+    delta_memory = deltaMemory(start_memory, stop_memory)
+
+    return delta_time, delta_memory
 
 
 def loadVideos(catalog, size_videos: int):
@@ -153,7 +203,7 @@ def primer_video(catalog):
 #antiguo:
 def pais_presente(catalog, pais):
     return model.pais_presente(catalog, pais)
-
+#nuevo
 def categoria_presente(catalog, categoria):
     categoria = str(categoria).lower()
     return model.categoria_presente(catalog, categoria)
@@ -191,14 +241,54 @@ def getMostLiked_porPaisyTags(catalog, number, pais, tag, metodo="merge"):
 
 #nuevo:
 def subListVideos_porCategoria(catalog, categoria_id):
-    return model.subListVideos_porCategoria(catalog, categoria_id)
+    videos = None
+#medir el tiempo y memoria:
+    
+    delta_time = -1.0
+    delta_memory = -1.0
+
+    tracemalloc.start()
+    start_time = getTime()
+    start_memory = getMemory()
+
+#-------------------------------------------
+    videos = model.subListVideos_porCategoria(catalog, categoria_id)
+#-------------------------------------------
+    stop_memory = getMemory()
+    stop_time = getTime()
+    tracemalloc.stop()
+
+    delta_time = stop_time - start_time
+    delta_memory = deltaMemory(start_memory, stop_memory)
+
+    return videos, delta_time, delta_memory
+    
 
 #nuevo:
-def getMostLiked_porCategoria(catalog, categoria_id, n:int):
+def getMostLiked_porCategoria(catalog, categoria_id, pais, n:int):
+    videos_cate = None
+    #medir tiempo y memoria:
+    
+    delta_time = -1.0
+    delta_memory = -1.0
+
+    tracemalloc.start()
+    start_time = getTime()
+    start_memory = getMemory()
+
+#-------------------------------------------
     videos_cate = subListVideos_porCategoria(catalog, categoria_id)
+#    videos_cate = subListVideos_porPais(videos_cate, pais)
     videos_cate = subListVideos2(videos_cate, 1, n)
     videos_cate = ObtenerVideosDistintos(videos_cate)
     sortVideos(videos_cate, 'merge', 'likes')
-    return videos_cate
+#-------------------------------------------
+    stop_memory = getMemory()
+    stop_time = getTime()
+    tracemalloc.stop()
+
+    delta_time = stop_time - start_time
+    delta_memory = deltaMemory(start_memory, stop_memory)
+
+    return videos_cate, delta_time, delta_memory
 #quedó perfecta
-#la vaina es que es como demoradita
