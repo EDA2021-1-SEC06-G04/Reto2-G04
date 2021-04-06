@@ -264,7 +264,7 @@ def subListVideos_porCategoria(catalog, categoria_id):
 
 
 #nuevo:
-def getMostLiked_porCategoria(catalog, categoria_id, n:int):
+def getMostLiked_porCategoriaPais(catalog, categoria_id, pais, n:int):
 
     #medir tiempo y memoria:
     
@@ -277,7 +277,7 @@ def getMostLiked_porCategoria(catalog, categoria_id, n:int):
 
 #-------------------------------------------
     videos_cate = subListVideos_porCategoria(catalog, categoria_id)[0]
-#    videos_cate = subListVideos_porPais(videos_cate, pais)
+    videos_cate = subListVideos_porPais(videos_cate, pais)
     videos_cate = subListVideos2(videos_cate, 1, n)
     videos_cate = ObtenerVideosDistintos(videos_cate)
     sortVideos(videos_cate, 'merge', 'likes')

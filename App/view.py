@@ -340,7 +340,7 @@ los datos una vez de los archivos. \n Para recargar, reinicia la aplicación.')
             else:
                 print("Recuerda que organizaras {} videos ".format(str(tamaño)))
         
-        respuesta = controller.getMostLiked_porCategoria(catalog, categoria_id, pais, tamaño)
+        respuesta = controller.getMostLiked_porCategoriaPais(catalog, categoria_id, pais, tamaño)
         tiempo = respuesta[1]
         #memoria = respuesta[2]
         memoria = 0
