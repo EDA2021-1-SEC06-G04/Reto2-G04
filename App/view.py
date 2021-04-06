@@ -324,13 +324,9 @@ los datos una vez de los archivos. \n Para recargar, reinicia la aplicación.')
         n = lt.size(controller.subListVideos_porCategoria(catalog, categoria_id)[0])
         print("Hay {} videos en la categoria".format(str(n)))
         print('Cuatos videos deseas procesar:\n')
-        ha_escogido_tamaño = False
-        while not ha_escogido_tamaño:
-            tamaño = int(input(""))
-            if tamaño <= n:
-                ha_escogido_tamaño = True
-            else:
-                print("Recuerda que hay {} videos en la categoria".format(str(n)))
+        
+        tamaño = int(input(""))
+            
         print('Mostrar en pantalla los primeros:\n')
         ha_escogido_tamaño_mostrar = False
         while not ha_escogido_tamaño_mostrar:
@@ -340,6 +336,7 @@ los datos una vez de los archivos. \n Para recargar, reinicia la aplicación.')
             else:
                 print("Recuerda que organizaras {} videos ".format(str(tamaño)))
         
+        pais = input("Escoger pais: \n")
         respuesta = controller.getMostLiked_porCategoriaPais(catalog, categoria_id, pais, tamaño)
         tiempo = respuesta[1]
         #memoria = respuesta[2]
