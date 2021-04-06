@@ -276,7 +276,7 @@ def getMostLiked_porCategoriaPais(catalog, categoria_id, pais, n:int):
     start_memory = getMemory()
 
 #-------------------------------------------
-    videos_cate = model.subListVideos_porCategoria(catalog, categoria_id)[0]
+    videos_cate = subListVideos_porCategoria(catalog, categoria_id)[0]
     videos_cate = subListVideos_porPais(videos_cate, pais)
     videos_cate = subListVideos2(videos_cate, 1, n)
     videos_cate = ObtenerVideosDistintos(videos_cate)
