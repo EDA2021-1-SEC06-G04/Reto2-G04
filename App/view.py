@@ -59,7 +59,7 @@ def printMenu():
     print("5- Consultar top x videos por LIKES, dado el país y UN tag")
 
     print('Reto 2:')
-    print('6- Consultar n videos con más likes en una categoria')
+    print('6- Consultar n videos con más likes en una categoria por pais')
     print("0- Salir")
 
 catalog = None
