@@ -43,7 +43,7 @@ los mismos.
 """
 
 # Construccion de modelos
-def newCatalog(estructura):
+def newCatalog(estructura, metodo_colision, factor_carga):
     """
     Inicializa el catálogo de libros. Crea una lista vacia para guardar
     todos los libros, adicionalmente, crea una lista vacia para los autores,
@@ -55,12 +55,12 @@ def newCatalog(estructura):
                'paises': None}
     catalog['videos'] = lt.newList(estructura)
     #lista de videos donde un video es una linea del csv
-    catalog['VideosPorCategoriasId'] = mp.newMap(numelements=37, maptype='CHAINING', loadfactor=4.0,
+    catalog['VideosPorCategoriasId'] = mp.newMap(numelements=37, maptype=metodo_colision, loadfactor=factor_carga,
      comparefunction=MAPcompareCategoriesById)
     #map : hash table, donde las llaves son dadas por las categorias y los valores de cada llave son videos,
     #  donde un video es una linea del csv (los mismos elementos de catalog['videos'])
 
-    catalog['VideosPorId'] = mp.newMap(numelements=380000, maptype='PROBING', loadfactor=0.5,
+    catalog['VideosPorId'] = mp.newMap(numelements=380000, maptype=metodo_colision, loadfactor=factor_carga,
      comparefunction=MAPcompareVideosById)
 #map : hash table, donde las llaves son dadas por las video_id y los valores de cada llave son videos,
 #  donde un video es una linea del csv (los mismos elementos de catalog['videos'])

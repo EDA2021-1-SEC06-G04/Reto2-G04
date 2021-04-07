@@ -30,18 +30,17 @@ assert cf
 
 
 
-
 '''
 La vista se encarga de la interacción con el usuario
 Presenta el menu de opciones y por cada seleccion
 se hace la solicitud al controlador para ejecutar la
 operación solicitada
 '''
-def initCatalog(estructura):
+def initCatalog(estructura, metodo_colision, factor_carga):
     """
     Inicializa el catalogo de libros
     """
-    return controller.initCatalog(estructura)
+    return controller.initCatalog(estructura, metodo_colision, factor_carga)
 
 def loadData(catalog, size_videos: int, estructura='ARRAY_LIST'):
     """
@@ -91,6 +90,31 @@ while True:
             print("Cuantos videos desea cargar maximo: (escribe T para todos)")
             cantidad_datos = input("")
 
+            print("¿Cuál mecanismo de colisión deseas usar para cargar los videos?")
+            escogio = False
+            while not escogio:
+                print("1: Probing")
+                print("2: Chaning")
+                metodo_colision = input("")
+                if metodo_colision == "1":
+                    escogio = True
+                    metodo_colision = 'PROBING'
+                elif metodo_colision == "2":
+                    escogio = True
+                    metodo_colision = 'CHAINING'
+                else:
+                    print("Por favor escoge una de las opciones disponibles.")
+            
+            
+            print("¿Cuál número de factor de carga desea utilizar?")
+            escogido = False
+            while not escogido:
+                factor_carga = float(input(""))
+                if factor_carga <= 0.0:
+                    print("Por favor escoge un número adecuado.")
+                else:
+                    escogido = True
+
             print("Cargando información de los archivos ....")
             if str(cantidad_datos).lower() == 't':
                 cantidad_datos = 375942
@@ -98,7 +122,7 @@ while True:
             if cantidad_datos >= 375942:
                 print("Espera mientras se cargan todos los datos, recuerda que el archivo Large tiene {} videos".format(str(375942)))
             
-            catalog = initCatalog(estructura)
+            catalog = initCatalog(estructura, metodo_colision, factor_carga)
             answer = loadData(catalog, cantidad_datos)
             tiempo = answer[0]
             memoria = answer[1]

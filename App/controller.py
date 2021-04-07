@@ -63,11 +63,11 @@ def deltaMemory(start_memory, stop_memory):
     return delta_memory
 
 # Inicialización del Catálogo de videos
-def initCatalog(estructura):
+def initCatalog(estructura, metodo_colision, factor_carga):
     """
     Llama la funcion de inicializacion del catalogo del modelo.
     """
-    catalog = model.newCatalog(estructura)
+    catalog = model.newCatalog(estructura, metodo_colision, factor_carga)
     return catalog
 
 # Funciones para la carga de datos
