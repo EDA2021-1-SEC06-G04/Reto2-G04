@@ -132,7 +132,7 @@ while True:
             print('Las categorias cargadas son :')
             posicion_imprimir = 1
             for cate in lt.iterator(mp.valueSet(catalog['VideosPorCategoriasId'])):
-                print(str(posicion_imprimir),": " + "ID: " + cate["categoria_id"] + "  ,  Nombre: " + cate['nombre_categoria'])
+                print(str(posicion_imprimir),": " + "ID: " + str(cate["categoria_id"]) + "  ,  Nombre: " + cate['nombre_categoria'])
                 posicion_imprimir += 1
             primer_video = controller.primer_video(catalog)
             print('El primer video cargado es:')

@@ -55,12 +55,12 @@ def newCatalog(estructura, metodo_colision, factor_carga):
                'paises': None}
     catalog['videos'] = lt.newList(estructura)
     #lista de videos donde un video es una linea del csv
-    catalog['VideosPorCategoriasId'] = mp.newMap(numelements=37, maptype=metodo_colision, loadfactor=factor_carga,
+    catalog['VideosPorCategoriasId'] = mp.newMap( maptype=metodo_colision, loadfactor=factor_carga,
      comparefunction=MAPcompareCategoriesById)
     #map : hash table, donde las llaves son dadas por las categorias y los valores de cada llave son videos,
     #  donde un video es una linea del csv (los mismos elementos de catalog['videos'])
 
-    catalog['VideosPorId'] = mp.newMap(numelements=380000, maptype=metodo_colision, loadfactor=factor_carga,
+    catalog['VideosPorId'] = mp.newMap( maptype=metodo_colision, loadfactor=factor_carga,
      comparefunction=MAPcompareVideosById)
 #map : hash table, donde las llaves son dadas por las video_id y los valores de cada llave son videos,
 #  donde un video es una linea del csv (los mismos elementos de catalog['videos'])
@@ -69,22 +69,33 @@ def newCatalog(estructura, metodo_colision, factor_carga):
 #antiguo:
     catalog['paises'] = lt.newList(datastructure = 'ARRAY_LIST')
 
+#    catalog['VideosPorPais_y_CategoriaId'] = mp.newMap(maptype=metodo_colision, loadfactor=factor_carga, comparefunction=MAPcomparePaises)
+
     return catalog
+
+
 
 # Funciones para agregar informacion al catalogo
 
 def addVideo(catalog, video):
     # Se adiciona el video a la lista de videos
     lt.addLast(catalog['videos'], video)
+
+    # agrega video al mapa videos por Id
     mp.put(catalog['VideosPorId'], video['video_id'], video)
+
+    # agrega video al mapa de videos por Categoria
     addVideo_a_Categoria(catalog, video)
+
+    
+
 
 def addVideo_a_Categoria(catalog, video):
     """
     Esta funcion adiciona un video a la lista de libros que
     son de la misma categoria especifica.
     Las categorias se guardan en un Map, donde la llave es la categoria
-    y el valor es la lista de videos de esa categoria.
+    y el valor es un diccionario que contiene: el nombre de la categoria y la lista de videos de esa categoria.
     """
     
     categorias = catalog['VideosPorCategoriasId']
@@ -117,9 +128,9 @@ def nuevaCategoria(categoria):
     """
     
     entry = {'categoria_id': "", "nombre_categoria": "", "videos": None}
-    entry['categoria_id'] = categoria['id']
+    entry['categoria_id'] = int(categoria['id'])
     entry['nombre_categoria'] = categoria['name']
-    entry['videos'] = lt.newList('SINGLE_LINKED', compareCategories)
+    entry['videos'] = lt.newList('ARRAY_LIST', compareCategories)
     return entry
 
 #antiguo:
@@ -224,6 +235,7 @@ def ObtenerVideosDistintos(tad_lista):
 
 #antiguo
 def getMaxReps(sublista):
+#solo funciona despues de haber usado ObtenerVideosDistintos
     if not lt.isEmpty(sublista):
         maximo_valor = 0
         maximo_apuntador = lt.firstElement(sublista)
@@ -284,7 +296,7 @@ def MAPcompareVideosById(id, entry):
 
 def MAPcompareCategoriesById(keyname, category):
     """
-    Compara dos nombres de autor. El primero es una cadena
+    Compara dos numeros de categoria. El primero es un int
     y el segundo un entry de un map
     """
     cat_entry = me.getKey(category)
