@@ -276,11 +276,10 @@ def getMostLiked_porPaisCategoria(catalog, categoria_id, pais, n:int):
     start_memory = getMemory()
 
 #-------------------------------------------
-    videos_cate = model.subListVideos_porCategoria(catalog, categoria_id)[0]
-    videos_cate = subListVideos_porPais(videos_cate, pais)
-    videos_cate = subListVideos2(videos_cate, 1, n)
-    videos_cate = ObtenerVideosDistintos(videos_cate)
-    sortVideos(videos_cate, 'merge', 'likes')
+    videos = model.subListVideos_porPais_Categoria(catalog, pais, categoria_id)
+    videos = subListVideos2(videos_cate, 1, n)
+    videos = ObtenerVideosDistintos(videos)
+    sortVideos(videos, 'merge', 'likes')
 #-------------------------------------------
     stop_memory = getMemory()
     stop_time = getTime()
@@ -289,5 +288,5 @@ def getMostLiked_porPaisCategoria(catalog, categoria_id, pais, n:int):
     delta_time = stop_time - start_time
     delta_memory = deltaMemory(start_memory, stop_memory)
 
-    return videos_cate, delta_time, delta_memory
+    return videos, delta_time, delta_memory
 #quedó perfecta
