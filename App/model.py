@@ -89,12 +89,13 @@ def addVideo(catalog, video):
     # agrega video al mapa de videos por Categoria
     addVideo_a_Categoria(catalog, video)
 
-    
-
     # agrega llaves pais y categoria al mapa compuesto
     addPaisyCategoriaMAPcompuesto(catalog, video)
-
     addVideo_a_PaisyCategoriaMAPcompuesto(catalog, video)
+
+
+    MPaddPais(catalog, video['country'])
+    MPaddVideoPorPais(catalog, video)
 
 
 
@@ -107,7 +108,7 @@ def addPaisyCategoriaMAPcompuesto(catalog, video):
         if not mp.contains(submapa, categoria_id):
             mp.put(submapa, categoria_id, lt.newList(datastructure="ARRAY_LIST", cmpfunction=cmpVideosByLikes))
     else:
-        nuevo_submapa = mp.newMap()
+        nuevo_submapa = mp.newMap(loadfactor=4.0)
         mp.put(nuevo_submapa, categoria_id, lt.newList(datastructure="ARRAY_LIST", cmpfunction=cmpVideosByLikes))
         mp.put(mapa, pais, nuevo_submapa)
 
@@ -197,7 +198,6 @@ def MPaddPais(catalog, pais):
         mp.put(videosPorPais, pais, lt.newList(datastructure='ARRAY_LIST'))
 
 def MPaddVideoPorPais(catalog, video):
-    videos = catalog['VideosPorPais']
     paisVideo = video['country']
     mapa = catalog['VideosPorPais']
     entry = mp.get(mapa, paisVideo)

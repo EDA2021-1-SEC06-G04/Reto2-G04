@@ -25,6 +25,7 @@ import sys
 import controller
 from DISClib.ADT import list as lt
 from DISClib.ADT import map as mp
+from DISClib.DataStructures import mapentry as me
 assert cf
 
 
@@ -159,6 +160,8 @@ while True:
                 contador_paises += 1
             print("Tiempo [ms]: ", f"{tiempo:.3f}", "  ||  ",
               "Memoria [kB]: ", f"{memoria:.3f}")
+            print(mp.get(catalog['VideosPorPais'],"canada"))
+            print(mp.get(me.getValue(mp.get(catalog['VideosPorPais_y_CategoriaId'],"canada")), 10))
         else:
             print('Los datos ya han sido cargados, recuerda que el programa solo tiene permitido cargar\
 los datos una vez de los archivos. \n Para recargar, reinicia la aplicación.')
@@ -393,13 +396,7 @@ los datos una vez de los archivos. \n Para recargar, reinicia la aplicación.')
 
     elif int(inputs[0])== 7:
         print("Información para el pais: ")
-        ha_escogido_pais_mp = False
-        while not ha_escogido_pais_mp:
-            pais_R2 = input("")
-            if controller.pais_presente(catalog, pais_R2):
-                ha_escogido_pais = True
-            else:
-                print("Por favor ingresa un pais disponible.")
+        pais_R2 = input("")
         print('Cargando informacion, por favor espera...')
         func = controller.VideoTrendingPais(catalog, pais_R2)
         video = func[0]

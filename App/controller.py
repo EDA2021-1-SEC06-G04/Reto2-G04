@@ -86,7 +86,8 @@ def loadData(catalog, size_videos: int):
 #   -----------------------------------  
     loadCategorias(catalog)
     loadVideos(catalog, size_videos)
-    loadPaises(catalog)
+    
+    #loadPaises(catalog)
 #   -----------------------------------  
 
     stop_memory = getMemory()
