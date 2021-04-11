@@ -69,7 +69,7 @@ def newCatalog(estructura, metodo_colision, factor_carga):
     catalog['paises'] = lt.newList(datastructure = 'ARRAY_LIST')
     catalog['VideosPorPais'] = mp.newMap(maptype=metodo_colision, loadfactor= factor_carga, comparefunction= MAPcomparePaises)
 
-    catalog['VideosPorPais_y_CategoriaId'] = mp.newMap(maptype=metodo_colision, loadfactor=factor_carga, comparefunction=MAPcomparePaises)
+    catalog['VideosPorPais_y_CategoriaId'] = mp.newMap(maptype=metodo_colision, loadfactor=factor_carga)
 #    este contiene primero un mapa con paises como llaves. Dado un pais llave: su valor asociado es un mapa
 # que tiene las categorias como llaves, aqui dada una categoria llave su valor asociado es una lista de 
 # los videos con esa categoria y ese pais 
