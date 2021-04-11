@@ -60,15 +60,14 @@ def newCatalog(estructura, metodo_colision, factor_carga):
     #map : hash table, donde las llaves son dadas por las categorias y los valores de cada llave son videos,
     #  donde un video es una linea del csv (los mismos elementos de catalog['videos'])
 
-    catalog['VideosPorId'] = mp.newMap(numelements=380000, maptype=metodo_colision, loadfactor=factor_carga,
-     comparefunction=MAPcompareVideosById)
+    catalog['VideosPorId'] = mp.newMap(maptype=metodo_colision, loadfactor=factor_carga,
+    comparefunction=MAPcompareVideosById)
 #map : hash table, donde las llaves son dadas por las video_id y los valores de cada llave son videos,
 #  donde un video es una linea del csv (los mismos elementos de catalog['videos'])
 #en otras palabras estos son los videos unicos
 
-#antiguo:
     catalog['paises'] = lt.newList(datastructure = 'ARRAY_LIST')
-
+    catalog['VideosPorPais'] = mp.newMap(maptype=metodo_colision, loadfactor= factor_carga, comparefunction= MAPcomparePaises)
     return catalog
 
 # Funciones para agregar informacion al catalogo
@@ -79,22 +78,6 @@ def addVideo(catalog, video):
     mp.put(catalog['VideosPorId'], video['video_id'], video)
     addVideo_a_Categoria(catalog, video)
 
-def addVideo_a_Categoria(catalog, video):
-    """
-    Esta funcion adiciona un video a la lista de libros que
-    son de la misma categoria especifica.
-    Las categorias se guardan en un Map, donde la llave es la categoria
-    y el valor es la lista de videos de esa categoria.
-    """
-    
-    categorias = catalog['VideosPorCategoriasId']
-#el video solo trae el id de la categoria, toca recorrer la lista de categorias para coger el nombre también
-    categoria_id = video['category_id']
-    
-    entry = mp.get(categorias, categoria_id)
-    videos_de_categoria = me.getValue(entry)
-    
-    lt.addLast(videos_de_categoria['videos'], video)
 
 def addCategoria(catalog, categoria):
 #esta categoria de entrada es un dicci
@@ -119,8 +102,25 @@ def nuevaCategoria(categoria):
     entry = {'categoria_id': "", "nombre_categoria": "", "videos": None}
     entry['categoria_id'] = categoria['id']
     entry['nombre_categoria'] = categoria['name']
-    entry['videos'] = lt.newList('SINGLE_LINKED', compareCategories)
+    entry['videos'] = lt.newList('ARRAY_LIST', compareCategories)
     return entry
+
+def addVideo_a_Categoria(catalog, video):
+    """
+    Esta funcion adiciona un video a la lista de libros que
+    son de la misma categoria especifica.
+    Las categorias se guardan en un Map, donde la llave es la categoria
+    y el valor es la lista de videos de esa categoria.
+    """
+    
+    categorias = catalog['VideosPorCategoriasId']
+#el video solo trae el id de la categoria, toca recorrer la lista de categorias para coger el nombre también
+    categoria_id = video['category_id']
+    
+    entry = mp.get(categorias, categoria_id)
+    videos_de_categoria = me.getValue(entry)
+    
+    lt.addLast(videos_de_categoria['videos'], video)
 
 #antiguo:
 def addPais(catalog, pais):
@@ -129,6 +129,19 @@ def addPais(catalog, pais):
 
 
 
+def MPaddPais(catalog, pais):
+    videosPorPais = catalog['VideosPorPais']
+    contiene = mp.contains(videosPorPais, pais)
+    if not contiene:
+        mp.put(videosPorPais, pais, lt.newList(datastructure='ARRAY_LIST'))
+
+def MPaddVideoPorPais(catalog, video):
+    videos = catalog['VideosPorPais']
+    paisVideo = video['country']
+    mapa = catalog['VideosPorPais']
+    entry = mp.get(mapa, paisVideo)
+    listaPorPais = me.getValue(entry)
+    lt.addLast(listaPorPais, video)
 
 # Funciones para creacion de datos
 
@@ -231,7 +244,7 @@ def getMaxReps(sublista):
             if video['repeticiones'] >= maximo_valor:
                 maximo_valor = video['repeticiones']
                 maximo_apuntador = video
-        return maximo_apuntador
+        return maximo_apuntador, maximo_valor
     else:
         return None
 #antiguo
@@ -252,7 +265,12 @@ def subListVideos_porTag(tad_lista, tag:str):
             lt.addLast(sublist, video)
     return sublist
 
-
+def VideoTrendingPais(catalog, pais):
+    entry = mp.get(catalog['VideosPorPais'], pais)
+    sublista = me.getValue(entry)
+    ObtenerVideosDistintos(sublista)
+    resultado = getMaxReps(sublista)
+    return resultado
 
 
 
@@ -299,6 +317,15 @@ def compareCategories(cate1, cate2):
     if (cate1 == cate2):
         return 0
     elif (cate1 > cate2):
+        return 1
+    else:
+        return -1
+
+
+def MAPcomparePaises(pais1, pais2):
+    if (pais1 == pais2):
+        return 0
+    elif (pais1 > pais2):
         return 1
     else:
         return -1

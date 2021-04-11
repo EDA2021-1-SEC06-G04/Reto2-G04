@@ -42,11 +42,23 @@ def initCatalog(estructura, metodo_colision, factor_carga):
     """
     return controller.initCatalog(estructura, metodo_colision, factor_carga)
 
+
 def loadData(catalog, size_videos: int, estructura='ARRAY_LIST'):
     """
     Carga los libros en la estructura de datos
     """
     return controller.loadData(catalog, size_videos)
+
+
+def printVideosTrendingPais(video,num_dias, pais_R2):
+    """
+    Imprime el video más trending por el país pasado por parámetro
+    """
+    print("El video que más días ha sido trending para el país "+pais_R2+" es:")
+    print('Título: '+ video['title'])
+    print('Título de canal: '+video['channel_title']) 
+    print('País: ' + video['country'])
+    print('Número de días tendencia: '+num_dias)
 
 
 
@@ -60,6 +72,7 @@ def printMenu():
 
     print('Reto 2:')
     print('6- Consultar n videos con más likes en una categoria por pais')
+    print('7- Consultar el video con más días de trending para un país específico.')
     print("0- Salir")
 
 catalog = None
@@ -376,7 +389,22 @@ los datos una vez de los archivos. \n Para recargar, reinicia la aplicación.')
         
         print("Tiempo [ms]: ", f"{tiempo:.3f}", "  ||  ",
               "Memoria [kB]: ", f"{memoria:.3f}")
-    
+
+
+    elif int(inputs[0])== 7:
+        print("Información para el pais: ")
+        ha_escogido_pais_mp = False
+        while not ha_escogido_pais_mp:
+            pais_R2 = input("")
+            if controller.pais_presente(catalog, pais_R2):
+                ha_escogido_pais = True
+            else:
+                print("Por favor ingresa un pais disponible.")
+        print('Cargando informacion, por favor espera...')
+        video = controller.VideoTrendingPais(catalog, pais_R2)[0]
+        num_dias = controller.VideoTrendingPais(catalog, pais_R2)[1]
+        printVideosTrendingPais(video, num_dias, pais_R2)
+
     else:
         sys.exit(0)
 

@@ -208,6 +208,11 @@ def categoria_presente(catalog, categoria):
     categoria = str(categoria).lower()
     return model.categoria_presente(catalog, categoria)
 
+#nuevo 
+def VideoTrendingPais(catalog, pais):
+    video = model.VideoTrendingPais(catalog, pais)
+    return video
+
 #antiguo:
 def ObtenerVideosDistintos(tad_lista):
     """
