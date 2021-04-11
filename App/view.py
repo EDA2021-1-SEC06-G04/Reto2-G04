@@ -358,8 +358,8 @@ los datos una vez de los archivos. \n Para recargar, reinicia la aplicación.')
                 categoria_id = id_presente[1]
             else:
                 print("Por favor ingresa una categoria disponible.")
-        n = lt.size(controller.subListVideos_porCategoria(catalog, categoria_id)[0])
-        print("Hay {} videos en la categoria".format(str(n)))
+#        n = lt.size(controller.subListVideos_porCategoria(catalog, categoria_id)[0])
+#        print("Hay {} videos en la categoria".format(str(n)))
         print('Cuatos videos deseas procesar:\n')
         
         tamaño = int(input(""))
