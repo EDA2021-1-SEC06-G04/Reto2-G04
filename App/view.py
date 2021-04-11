@@ -59,7 +59,7 @@ def printVideosTrendingPais(video,num_dias, pais_R2):
     print('Título: '+ video['title'])
     print('Título de canal: '+video['channel_title']) 
     print('País: ' + video['country'])
-    print('Número de días tendencia: '+num_dias)
+    print('Número de días tendencia: '+ str(num_dias))
 
 
 
@@ -160,8 +160,8 @@ while True:
                 contador_paises += 1
             print("Tiempo [ms]: ", f"{tiempo:.3f}", "  ||  ",
               "Memoria [kB]: ", f"{memoria:.3f}")
-            print(mp.get(catalog['VideosPorPais'],"canada"))
-            print(mp.get(me.getValue(mp.get(catalog['VideosPorPais_y_CategoriaId'],"canada")), 10))
+            #print(mp.get(catalog['VideosPorPais'],"canada"))
+            #print(mp.get(me.getValue(mp.get(catalog['VideosPorPais_y_CategoriaId'],"canada")), 10))
         else:
             print('Los datos ya han sido cargados, recuerda que el programa solo tiene permitido cargar\
 los datos una vez de los archivos. \n Para recargar, reinicia la aplicación.')
@@ -250,20 +250,14 @@ los datos una vez de los archivos. \n Para recargar, reinicia la aplicación.')
     
     elif int(inputs[0]) == 3:
         print("Buscando en el país: ")
-        ha_escogido_pais = False
-        while not ha_escogido_pais:
-            pais = input("")
-            if controller.pais_presente(catalog, pais):
-                ha_escogido_pais = True
-            else:
-                print("Por favor ingresa un pais disponible.")
+        pais = input("")
         print('Cargando informacion, por favor espera...')
         time_1 = time.process_time()
-        mas_trending = controller.getMostTrending(catalog, pais)
+        mas_trending = controller.getMostTrending(catalog, pais)[0]
         time_2 = time.process_time()
         print("El video con mayor cantidad de dias en tendencia en {} es : ".format(pais))
         print("Titulo: " + mas_trending["title"] + ", Canal: " + mas_trending["channel_title"] + ", Dias en tendencia: "\
- + str(mas_trending["repeticiones"]) + ", Pais: " + mas_trending["country"])
+ + str(mas_trending["repeticiones"]) + ", Pais: " + mas_trending["country"] + " ID: " + mas_trending["video_id"])
         print('Milisegundos de carga :{}'.format(str((time_2-time_1)*1000)))
 #        print(mas_trending['video_id'])
     
@@ -401,7 +395,6 @@ los datos una vez de los archivos. \n Para recargar, reinicia la aplicación.')
         func = controller.VideoTrendingPais(catalog, pais_R2)
         video = func[0]
         num_dias = func[1]
-        print(video['repeticiones'])
         printVideosTrendingPais(video, num_dias, pais_R2)
 
     else:

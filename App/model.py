@@ -69,7 +69,7 @@ def newCatalog(estructura, metodo_colision, factor_carga):
     catalog['paises'] = lt.newList(datastructure = 'ARRAY_LIST')
     catalog['VideosPorPais'] = mp.newMap(maptype=metodo_colision, loadfactor= factor_carga, comparefunction= MAPcomparePaises)
 
-    catalog['VideosPorPais_y_CategoriaId'] = mp.newMap(maptype=metodo_colision, loadfactor=factor_carga)
+    catalog['VideosPorPais_y_CategoriaId'] = mp.newMap(maptype=metodo_colision, loadfactor=factor_carga, comparefunction=MAPcomparePaises)
 #    este contiene primero un mapa con paises como llaves. Dado un pais llave: su valor asociado es un mapa
 # que tiene las categorias como llaves, aqui dada una categoria llave su valor asociado es una lista de 
 # los videos con esa categoria y ese pais 
@@ -108,7 +108,7 @@ def addPaisyCategoriaMAPcompuesto(catalog, video):
         if not mp.contains(submapa, categoria_id):
             mp.put(submapa, categoria_id, lt.newList(datastructure="ARRAY_LIST", cmpfunction=cmpVideosByLikes))
     else:
-        nuevo_submapa = mp.newMap(loadfactor=4.0)
+        nuevo_submapa = mp.newMap(loadfactor=4.0, comparefunction=MAPcompareCategoriesById)
         mp.put(nuevo_submapa, categoria_id, lt.newList(datastructure="ARRAY_LIST", cmpfunction=cmpVideosByLikes))
         mp.put(mapa, pais, nuevo_submapa)
 
@@ -277,6 +277,7 @@ def subListVideos_porPais(tad_lista, pais:str):
 
 #antiguo
 def ObtenerVideosDistintos(tad_lista):
+    # HAY QUE ORGANIZAR POR VIDEO ID ANTES DE USAR ESTA FUNCIÓN PARA QUE FUNCIONE !!!
     videos_distintos = lt.newList(datastructure = 'ARRAY_LIST')
     primero = lt.firstElement(tad_lista)
     primero['repeticiones'] = 1
@@ -337,6 +338,7 @@ def subListVideos_porTag(tad_lista, tag:str):
 def VideoTrendingPais(catalog, pais):
     entry = mp.get(catalog['VideosPorPais'], pais)
     sublista = me.getValue(entry)
+    sortList(sublista, 'merge', 'video_id')
     sublista = ObtenerVideosDistintos(sublista)
     resultado = getMaxReps(sublista)
     return resultado
