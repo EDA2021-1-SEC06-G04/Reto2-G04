@@ -69,8 +69,10 @@ def newCatalog(estructura, metodo_colision, factor_carga):
 #antiguo:
     catalog['paises'] = lt.newList(datastructure = 'ARRAY_LIST')
 
-#    catalog['VideosPorPais_y_CategoriaId'] = mp.newMap(maptype=metodo_colision, loadfactor=factor_carga, comparefunction=MAPcomparePaises)
-
+    catalog['VideosPorPais_y_CategoriaId'] = mp.newMap(maptype=metodo_colision, loadfactor=factor_carga, comparefunction=MAPcomparePaises)
+#    este contiene primero un mapa con paises como llaves. Dado un pais llave: su valor asociado es un mapa
+# que tiene las categorias como llaves, aqui dada una categoria llave su valor asociado es una lista de 
+# los videos con esa categoria y ese pais 
     return catalog
 
 
@@ -88,6 +90,34 @@ def addVideo(catalog, video):
     addVideo_a_Categoria(catalog, video)
 
     
+
+    # agrega llaves pais y categoria al mapa compuesto
+    addPaisyCategoriaMAPcompuesto(catalog, video)
+
+    addVideo_a_PaisyCategoriaMAPcompuesto(catalog, video)
+
+
+
+def addPaisyCategoriaMAPcompuesto(catalog, video):
+    mapa = catalog['VideosPorPais_y_CategoriaId']
+    pais = video['country']
+    categoria_id = video['category_id']
+    if mp.contains(mapa, pais):
+        submapa = me.getValue(mp.get(mapa, pais))
+        if not mp.contains(submapa, categoria_id):
+            mp.put(submapa, categoria_id, lt.newList())
+    else:
+        mp.put(mapa, pais, mp.newMap())
+
+def addVideo_a_PaisyCategoriaMAPcompuesto(catalog, video):
+    mapa = catalog['VideosPorPais_y_CategoriaId']
+    pais = video['country']
+    categoria_id = video['category_id']
+    submapa = me.getValue(mp.get(mapa, pais))
+    videos = me.getValue(mp.get(submapa, categoria_id))
+    lt.addLast(lst, video)
+
+
 
 
 def addVideo_a_Categoria(catalog, video):
@@ -195,6 +225,13 @@ def subListVideos_porCategoria(catalog, categoria_id:str):
     categorias = catalog['VideosPorCategoriasId']
     entry = mp.get(categorias, categoria_id)
     videos = me.getValue(entry)['videos']
+    return videos
+
+#nuevo:
+def subListVideos_porPais_Categoria(catalog, pais:str, categoria_id:str):
+    mapa = catalog['VideosPorPais_y_CategoriaId']
+    submapa = me.getValue(mp.get(mapa, pais))
+    videos = me.getValue(mp.get(submapa, categoria_id))
     return videos
 
 #antiguo

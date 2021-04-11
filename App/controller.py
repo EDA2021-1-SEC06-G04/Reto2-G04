@@ -264,7 +264,7 @@ def subListVideos_porCategoria(catalog, categoria_id):
 
 
 #nuevo:
-def getMostLiked_porCategoriaPais(catalog, categoria_id, pais, n:int):
+def getMostLiked_porPaisCategoria(catalog, categoria_id, pais, n:int):
 
     #medir tiempo y memoria:
     
