@@ -401,8 +401,10 @@ los datos una vez de los archivos. \n Para recargar, reinicia la aplicación.')
             else:
                 print("Por favor ingresa un pais disponible.")
         print('Cargando informacion, por favor espera...')
-        video = controller.VideoTrendingPais(catalog, pais_R2)[0]
-        num_dias = controller.VideoTrendingPais(catalog, pais_R2)[1]
+        func = controller.VideoTrendingPais(catalog, pais_R2)
+        video = func[0]
+        num_dias = func[1]
+        print(video['repeticiones'])
         printVideosTrendingPais(video, num_dias, pais_R2)
 
     else:

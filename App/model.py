@@ -268,7 +268,7 @@ def subListVideos_porTag(tad_lista, tag:str):
 def VideoTrendingPais(catalog, pais):
     entry = mp.get(catalog['VideosPorPais'], pais)
     sublista = me.getValue(entry)
-    ObtenerVideosDistintos(sublista)
+    sublista = ObtenerVideosDistintos(sublista)
     resultado = getMaxReps(sublista)
     return resultado
 
