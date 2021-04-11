@@ -145,7 +145,7 @@ while True:
             print('Las categorias cargadas son :')
             posicion_imprimir = 1
             for cate in lt.iterator(mp.valueSet(catalog['VideosPorCategoriasId'])):
-                print(str(posicion_imprimir),": " + "ID: " + cate["categoria_id"] + "  ,  Nombre: " + cate['nombre_categoria'])
+                print(str(posicion_imprimir),": " + "ID: " + str(cate["categoria_id"]) + "  ,  Nombre: " + cate['nombre_categoria'])
                 posicion_imprimir += 1
             primer_video = controller.primer_video(catalog)
             print('El primer video cargado es:')
@@ -374,7 +374,7 @@ los datos una vez de los archivos. \n Para recargar, reinicia la aplicación.')
                 print("Recuerda que organizaras {} videos ".format(str(tamaño)))
         
         pais = input("Escoger pais: \n")
-        respuesta = controller.getMostLiked_porCategoriaPais(catalog, categoria_id, pais, tamaño)
+        respuesta = controller.getMostLiked_porPaisCategoria(catalog, categoria_id, pais, tamaño)
         tiempo = respuesta[1]
         memoria = respuesta[2]
         #memoria = 0

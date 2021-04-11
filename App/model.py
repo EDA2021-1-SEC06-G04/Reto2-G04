@@ -55,7 +55,7 @@ def newCatalog(estructura, metodo_colision, factor_carga):
                'paises': None}
     catalog['videos'] = lt.newList(estructura)
     #lista de videos donde un video es una linea del csv
-    catalog['VideosPorCategoriasId'] = mp.newMap(numelements=37, maptype=metodo_colision, loadfactor=factor_carga,
+    catalog['VideosPorCategoriasId'] = mp.newMap( maptype=metodo_colision, loadfactor=factor_carga,
      comparefunction=MAPcompareCategoriesById)
     #map : hash table, donde las llaves son dadas por las categorias y los valores de cada llave son videos,
     #  donde un video es una linea del csv (los mismos elementos de catalog['videos'])
@@ -68,16 +68,74 @@ def newCatalog(estructura, metodo_colision, factor_carga):
 
     catalog['paises'] = lt.newList(datastructure = 'ARRAY_LIST')
     catalog['VideosPorPais'] = mp.newMap(maptype=metodo_colision, loadfactor= factor_carga, comparefunction= MAPcomparePaises)
+
+    catalog['VideosPorPais_y_CategoriaId'] = mp.newMap(maptype=metodo_colision, loadfactor=factor_carga, comparefunction=MAPcomparePaises)
+#    este contiene primero un mapa con paises como llaves. Dado un pais llave: su valor asociado es un mapa
+# que tiene las categorias como llaves, aqui dada una categoria llave su valor asociado es una lista de 
+# los videos con esa categoria y ese pais 
     return catalog
+
+
 
 # Funciones para agregar informacion al catalogo
 
 def addVideo(catalog, video):
     # Se adiciona el video a la lista de videos
     lt.addLast(catalog['videos'], video)
+
+    # agrega video al mapa videos por Id
     mp.put(catalog['VideosPorId'], video['video_id'], video)
+
+    # agrega video al mapa de videos por Categoria
     addVideo_a_Categoria(catalog, video)
 
+    
+
+    # agrega llaves pais y categoria al mapa compuesto
+    addPaisyCategoriaMAPcompuesto(catalog, video)
+
+    addVideo_a_PaisyCategoriaMAPcompuesto(catalog, video)
+
+
+
+def addPaisyCategoriaMAPcompuesto(catalog, video):
+    mapa = catalog['VideosPorPais_y_CategoriaId']
+    pais = video['country']
+    categoria_id = video['category_id']
+    if mp.contains(mapa, pais):
+        submapa = me.getValue(mp.get(mapa, pais))
+        if not mp.contains(submapa, categoria_id):
+            mp.put(submapa, categoria_id, lt.newList())
+    else:
+        mp.put(mapa, pais, mp.newMap())
+
+def addVideo_a_PaisyCategoriaMAPcompuesto(catalog, video):
+    mapa = catalog['VideosPorPais_y_CategoriaId']
+    pais = video['country']
+    categoria_id = video['category_id']
+    submapa = me.getValue(mp.get(mapa, pais))
+    videos = me.getValue(mp.get(submapa, categoria_id))
+    lt.addLast(lst, video)
+
+
+
+
+def addVideo_a_Categoria(catalog, video):
+    """
+    Esta funcion adiciona un video a la lista de libros que
+    son de la misma categoria especifica.
+    Las categorias se guardan en un Map, donde la llave es la categoria
+    y el valor es un diccionario que contiene: el nombre de la categoria y la lista de videos de esa categoria.
+    """
+    
+    categorias = catalog['VideosPorCategoriasId']
+#el video solo trae el id de la categoria, toca recorrer la lista de categorias para coger el nombre también
+    categoria_id = video['category_id']
+    
+    entry = mp.get(categorias, categoria_id)
+    videos_de_categoria = me.getValue(entry)
+    
+    lt.addLast(videos_de_categoria['videos'], video)
 
 def addCategoria(catalog, categoria):
 #esta categoria de entrada es un dicci
@@ -100,7 +158,7 @@ def nuevaCategoria(categoria):
     """
     
     entry = {'categoria_id': "", "nombre_categoria": "", "videos": None}
-    entry['categoria_id'] = categoria['id']
+    entry['categoria_id'] = int(categoria['id'])
     entry['nombre_categoria'] = categoria['name']
     entry['videos'] = lt.newList('ARRAY_LIST', compareCategories)
     return entry
@@ -199,6 +257,13 @@ def subListVideos_porCategoria(catalog, categoria_id:str):
     videos = me.getValue(entry)['videos']
     return videos
 
+#nuevo:
+def subListVideos_porPais_Categoria(catalog, pais:str, categoria_id:str):
+    mapa = catalog['VideosPorPais_y_CategoriaId']
+    submapa = me.getValue(mp.get(mapa, pais))
+    videos = me.getValue(mp.get(submapa, categoria_id))
+    return videos
+
 #antiguo
 def subListVideos_porPais(tad_lista, pais:str):
     sublist = lt.newList(datastructure = tad_lista['type'])
@@ -237,6 +302,7 @@ def ObtenerVideosDistintos(tad_lista):
 
 #antiguo
 def getMaxReps(sublista):
+#solo funciona despues de haber usado ObtenerVideosDistintos
     if not lt.isEmpty(sublista):
         maximo_valor = 0
         maximo_apuntador = lt.firstElement(sublista)
@@ -302,7 +368,7 @@ def MAPcompareVideosById(id, entry):
 
 def MAPcompareCategoriesById(keyname, category):
     """
-    Compara dos nombres de autor. El primero es una cadena
+    Compara dos numeros de categoria. El primero es un int
     y el segundo un entry de un map
     """
     cat_entry = me.getKey(category)
