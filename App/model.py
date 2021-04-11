@@ -391,13 +391,16 @@ def compareCategories(cate1, cate2):
         return -1
 
 
-def MAPcomparePaises(pais1, pais2):
-    if (pais1 == pais2):
+def MAPcomparePaises(keyname, pais):
+    pais_entry = me.getKey(pais)
+    if (keyname == pais_entry):
         return 0
-    elif (pais1 > pais2):
+    elif (keyname > pais_entry):
         return 1
     else:
         return -1
+
+
 
 #def cmpVideosBy_criterio(video1, video2):
 #    return (float(video1['criterio']) > float(video2['criterio']))
