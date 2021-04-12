@@ -358,9 +358,12 @@ los datos una vez de los archivos. \n Para recargar, reinicia la aplicación.')
         memoria = respuesta[2]
         mas_likeados = respuesta[0]
         contador = 0
+
         for video in lt.iterator(mas_likeados):
             contador += 1
-            print(str(contador)+': '+'Titulo: '+(video['title']) + ',  Likes: ' + str(video['likes']))
+            print(str(contador)+': '+'Titulo: '+(video['title']) + ' ,  Views: ' + str(video['views']) + ' , Trending date: '+
+            video['trending_date'] + ' , Título de canal: ' + video['channel_title'] + ' , Fecha publicación: ' + video['publish_time']+
+            ' , Likes: ' + video['likes'], + ' , Dislikes: ' + video['dislikes'])
             if contador >= tamaño_mostrar:
                 break
 
@@ -377,6 +380,16 @@ los datos una vez de los archivos. \n Para recargar, reinicia la aplicación.')
         video = func[0]
         num_dias = func[1]
         printVideosTrendingPais(video, num_dias, pais_R2)
+
+    elif int(inputs[0]) == 8:
+        print('¿Para cuál categoría quiere obtener la información?')
+        cate = input("")
+        print('Cargando información para la categoría...')
+        
+
+
+
+
 
     else:
         sys.exit(0)
