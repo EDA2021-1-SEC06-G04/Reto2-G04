@@ -88,20 +88,7 @@ while True:
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
         if catalog == None:
-            print("¿Cual estructura de datos deseas usar para guardar los videos?")
-            ha_escogido = False
-            while not ha_escogido:
-                print("1: Arreglo (Recomendado)")
-                print("2: Lista Enlazada")
-                escogencia = str(input(""))
-                if escogencia == "1":
-                    ha_escogido = True
-                    estructura = 'ARRAY_LIST'
-                elif escogencia == "2":
-                    ha_escogido = True
-                    estructura = 'LINKED_LIST'
-                else:
-                    print("Por favor escoge una de las dos opciones")
+            
             
             print("Cuantos videos desea cargar maximo: (escribe T para todos)")
             cantidad_datos = input("")
@@ -137,7 +124,7 @@ while True:
             cantidad_datos = int(cantidad_datos)
             if cantidad_datos >= 375942:
                 print("Espera mientras se cargan todos los datos, recuerda que el archivo Large tiene {} videos".format(str(375942)))
-            
+            estructura = "ARRAY_LIST"
             catalog = initCatalog(estructura, metodo_colision, factor_carga)
             answer = loadData(catalog, cantidad_datos)
             tiempo = answer[0]
@@ -358,24 +345,17 @@ los datos una vez de los archivos. \n Para recargar, reinicia la aplicación.')
             else:
                 print("Por favor ingresa una categoria disponible.")
                 
-        print('Cuatos videos deseas procesar:\n')
         
-        tamaño = int(input(""))
             
         print('Mostrar en pantalla los primeros:\n')
-        ha_escogido_tamaño_mostrar = False
-        while not ha_escogido_tamaño_mostrar:
-            tamaño_mostrar = int(input(""))
-            if tamaño_mostrar <= tamaño:
-                ha_escogido_tamaño_mostrar = True
-            else:
-                print("Recuerda que organizaras {} videos ".format(str(tamaño)))
+        
+        tamaño_mostrar = int(input(""))
+            
         
         pais = input("Escoger pais: \n")
-        respuesta = controller.getMostLiked_porPaisCategoria(catalog, categoria_id, pais, tamaño)
+        respuesta = controller.getMostLiked_porPaisCategoria(catalog, categoria_id, pais)
         tiempo = respuesta[1]
         memoria = respuesta[2]
-        #memoria = 0
         mas_likeados = respuesta[0]
         contador = 0
         for video in lt.iterator(mas_likeados):

@@ -271,7 +271,7 @@ def subListVideos_porCategoria(catalog, categoria_id):
 
 
 #nuevo:
-def getMostLiked_porPaisCategoria(catalog, categoria_id, pais, n:int):
+def getMostLiked_porPaisCategoria(catalog, categoria_id, pais):
 
     #medir tiempo y memoria:
     
@@ -284,7 +284,6 @@ def getMostLiked_porPaisCategoria(catalog, categoria_id, pais, n:int):
 
 #-------------------------------------------
     videos = model.subListVideos_porPais_Categoria(catalog, pais, categoria_id)
-#    videos = subListVideos2(videos, 1, n)
     videos = ObtenerVideosDistintos(videos)
     sortVideos(videos, 'merge', 'likes')
 #-------------------------------------------
