@@ -284,7 +284,7 @@ def getMostLiked_porPaisCategoria(catalog, categoria_id, pais, n:int):
 
 #-------------------------------------------
     videos = model.subListVideos_porPais_Categoria(catalog, pais, categoria_id)
-    videos = subListVideos2(videos_cate, 1, n)
+#    videos = subListVideos2(videos, 1, n)
     videos = ObtenerVideosDistintos(videos)
     sortVideos(videos, 'merge', 'likes')
 #-------------------------------------------
