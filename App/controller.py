@@ -117,7 +117,8 @@ def loadVideos(catalog, size_videos: int):
         for info in info_numerica:
             video_agregar[info] = int(video_leido[info])
         
-        
+        video_agregar['category_id'] = int(video_agregar['category_id'])
+
         video_agregar['trending_date'] = datetime.strptime(video_leido['trending_date'], '%y.%d.%m').date()
         
         video_agregar['tags'] = lt.newList('ARRAY_LIST')

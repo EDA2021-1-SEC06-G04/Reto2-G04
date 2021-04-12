@@ -143,12 +143,12 @@ while True:
             tiempo = answer[0]
             memoria = answer[1]
             print('Videos cargados: ' + str(lt.size(catalog['videos'])))
-            
-            print('Categorias cargadas: ' + str(mp.size(catalog['VideosPorCategoriasId'])))
+            categorias_mapa = catalog['Categorias']
+            print('Categorias cargadas: ' + str(mp.size(categorias_mapa)))
             print('Las categorias cargadas son :')
             posicion_imprimir = 1
-            for cate in lt.iterator(mp.valueSet(catalog['VideosPorCategoriasId'])):
-                print(str(posicion_imprimir),": " + "ID: " + str(cate["categoria_id"]) + "  ,  Nombre: " + cate['nombre_categoria'])
+            for cate in lt.iterator(mp.keySet(categorias_mapa)):
+                print(str(posicion_imprimir),": " + "ID: " + str(cate) + "  ,  Nombre: " + me.getValue(mp.get(categorias_mapa, cate)))
                 posicion_imprimir += 1
             primer_video = controller.primer_video(catalog)
             print('El primer video cargado es:')
@@ -357,8 +357,7 @@ los datos una vez de los archivos. \n Para recargar, reinicia la aplicación.')
                 categoria_id = id_presente[1]
             else:
                 print("Por favor ingresa una categoria disponible.")
-#        n = lt.size(controller.subListVideos_porCategoria(catalog, categoria_id)[0])
-#        print("Hay {} videos en la categoria".format(str(n)))
+                
         print('Cuatos videos deseas procesar:\n')
         
         tamaño = int(input(""))
