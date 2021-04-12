@@ -86,7 +86,7 @@ def loadData(catalog, size_videos: int):
 #   -----------------------------------  
     loadCategorias(catalog)
     loadVideos(catalog, size_videos)
-    
+
     #loadPaises(catalog)
 #   -----------------------------------  
 
@@ -271,7 +271,7 @@ def subListVideos_porCategoria(catalog, categoria_id):
 
 
 #nuevo:
-def getMostLiked_porPaisCategoria(catalog, categoria_id, pais):
+def getMostViewed_porPaisCategoria(catalog, categoria_id, pais):
 
     #medir tiempo y memoria:
     
@@ -285,7 +285,7 @@ def getMostLiked_porPaisCategoria(catalog, categoria_id, pais):
 #-------------------------------------------
     videos = model.subListVideos_porPais_Categoria(catalog, pais, categoria_id)
     videos = ObtenerVideosDistintos(videos)
-    sortVideos(videos, 'merge', 'likes')
+    sortVideos(videos, 'merge', 'views')
 #-------------------------------------------
     stop_memory = getMemory()
     stop_time = getTime()

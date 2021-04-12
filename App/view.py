@@ -353,7 +353,7 @@ los datos una vez de los archivos. \n Para recargar, reinicia la aplicación.')
             
         
         pais = input("Escoger pais: \n")
-        respuesta = controller.getMostLiked_porPaisCategoria(catalog, categoria_id, pais)
+        respuesta = controller.getMostViewed_porPaisCategoria(catalog, categoria_id, pais)
         tiempo = respuesta[1]
         memoria = respuesta[2]
         mas_likeados = respuesta[0]
