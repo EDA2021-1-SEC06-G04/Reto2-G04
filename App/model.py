@@ -107,6 +107,8 @@ def addPaisyCategoriaMAPcompuesto(catalog, video):
         submapa = me.getValue(mp.get(mapa, pais))
         if not mp.contains(submapa, categoria_id):
             mp.put(submapa, categoria_id, lt.newList(datastructure="ARRAY_LIST", cmpfunction=cmpVideosByLikes))
+        else:
+            print(mp.get(submapa, categoria_id)['type'])
     else:
         nuevo_submapa = mp.newMap(loadfactor=4.0, comparefunction=MAPcompareCategoriesById)
         mp.put(nuevo_submapa, categoria_id, lt.newList(datastructure="ARRAY_LIST", cmpfunction=cmpVideosByLikes))
@@ -233,6 +235,8 @@ def primer_video(catalog):
 #antiguo
 def pais_presente(catalog, pais:str):
     return lt.isPresent(catalog['paises'], pais)
+
+
 #nuevo
 def categoria_presente(catalog, categoria_nombre:str):
     nombre_presente = False
@@ -264,6 +268,7 @@ def subListVideos_porCategoria(catalog, categoria_id:str):
 def subListVideos_porPais_Categoria(catalog, pais:str, categoria_id:str):
     mapa = catalog['VideosPorPais_y_CategoriaId']
     submapa = me.getValue(mp.get(mapa, pais))
+    print(mp.get(submapa, categoria_id))
     videos = me.getValue(mp.get(submapa, categoria_id))
     return videos
 

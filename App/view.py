@@ -74,6 +74,8 @@ def printMenu():
     print('Reto 2:')
     print('6- Consultar n videos con más likes en una categoria por pais')
     print('7- Consultar el video con más días de trending para un país específico.')
+    print('8- Consultar el video con más días de trending para una categoría específica.')
+    print('9- Consultar n videos con más likes en un país y tag específico.')
     print("0- Salir")
 
 catalog = None
