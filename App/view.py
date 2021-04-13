@@ -66,6 +66,7 @@ def printVideosPorTagsR4(resultados, n):
     if not lt.isEmpty(resultados):
         print("Lista de " + str(n) + " videos con más likes para el tag y país dados: ")
         contador = 0
+        print("----------------------------------------------------------------------------------------------------------------------------------------------------------")
         for video in lt.iterator(resultados):
             print("Título: " + video['title'])
             print("Título del canal: " + video['channel_title'])
@@ -74,7 +75,7 @@ def printVideosPorTagsR4(resultados, n):
             print("Likes: " + str(video['likes']))
             print("Dislikes: " + str(video['dislikes']))
             print("Tags: " + str(video['tags']['elements']))
-            print("-------------------------------------------------------------------------------------")
+            print("---------------------------------------------------------------------------------------------------------------------------------------------------")
             contador += 1
             if contador >= n:
                 break 
