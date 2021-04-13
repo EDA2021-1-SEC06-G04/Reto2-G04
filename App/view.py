@@ -409,8 +409,31 @@ los datos una vez de los archivos. \n Para recargar, reinicia la aplicación.')
 
     elif int(inputs[0]) == 8:
         print('¿Para cuál categoría quiere obtener la información?')
-        cate = input("")
+        ha_escogido_categoria = False
+        while not ha_escogido_categoria:
+            categoria_nombre = input("")
+            id_presente = controller.categoria_presente(catalog, categoria_nombre)
+            if id_presente[0]:
+                ha_escogido_categoria = True
+                categoria_id = id_presente[1]
+            else:
+                print("Por favor ingresa una categoria disponible.")
+        
         print('Cargando información para la categoría...')
+        resultado = controller.getMostTrending_Categoria(catalog, categoria_id)
+        video = resultado[0]
+        N_dias = resultado[1]
+        print('--------------------------------------------------------------------------------------------------------------')
+        print('--------------------------------------------------------------------------------------------------------------')
+        print("El video de la categoria {} que mas días distintos fue trending en el mundo es:".format(categoria_nombre))
+        print('Titulo: '+(video['title']) + ', Título de canal: ' + video['channel_title'] + ', ID de Categoria: ' + 
+        video['category_id'])
+        print('Estuvo en tendencia {} dias distintos'.format(str(N_dias)))
+        print('--------------------------------------------------------------------------------------------------------------')
+        print('--------------------------------------------------------------------------------------------------------------')
+        
+
+
         
 
     elif int(inputs[0])== 9:
