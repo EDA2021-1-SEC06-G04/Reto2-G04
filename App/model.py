@@ -56,13 +56,15 @@ def newCatalog(estructura, metodo_colision, factor_carga):
     catalog['videos'] = lt.newList(estructura)
     #lista de videos donde un video es una linea del csv
 
-
-
+    
 
     #        
-    catalog['Categorias'] = mp.newMap( maptype=metodo_colision, loadfactor=factor_carga,
+    catalog['Categorias'] = mp.newMap(maptype=metodo_colision, loadfactor=factor_carga,
     comparefunction=MAPcompareCategoriesById)
-    #map : hash table, donde las llaves son dadas por las categorias y los valores son los NOMBRES DE LAS CATEGORIAS
+    #map : hash table, donde las llaves son dadas por las categorias y los valores son diccionarios que tienen:
+    # los IDS DE LAS CATEGORIAS
+    # los NOMBRES DE LAS CATEGORIAS
+    # lista de videos de la categoria
 
     catalog['VideosPorId'] = mp.newMap(maptype=metodo_colision, loadfactor=factor_carga,
     comparefunction=MAPcompareVideosById)
@@ -90,7 +92,7 @@ def addVideo(catalog, video):
     # agrega video al mapa videos por Id
     mp.put(catalog['VideosPorId'], video['video_id'], video)
 
-    
+    addVideo_a_Categoria(catalog, video)
 
     # agrega llaves pais y categoria al mapa compuesto
     addPaisyCategoriaMAPcompuesto(catalog, video)
@@ -127,16 +129,32 @@ def addVideo_a_PaisyCategoriaMAPcompuesto(catalog, video):
 
 
 
-
+#nuevo
 def addCategoria(catalog, categoria):
 #esta categoria de entrada es un dicci
-#    categoria_id = categoria['id']
+
+
     nombre_categoria = categoria['name']
     categorias = catalog['Categorias']
     categoria_id = int(categoria['id'])
     existCate = mp.contains(categorias, categoria_id)
     if not existCate:
-        mp.put(categorias, categoria_id, nombre_categoria)
+        mp.put(categorias, categoria_id, nueva_categoria(categoria_id, nombre_categoria))
+
+
+#nuevo
+def nueva_categoria(categoria_id:int, nombre_categoria:str):
+    dicci = {'categoria_id': categoria_id, 'nombre_categoria':nombre_categoria}
+    videos_categoria = lt.newList(datastructure='ARRAY_LIST', cmpfunction=compareCategories)
+    dicci['videos_categoria'] = videos_categoria
+    return dicci
+
+def addVideo_a_Categoria(catalog, video):
+    categorias = catalog['Categorias']
+    categoria_id = video['category_id']
+    videos_categoria = me.getValue(mp.get(categorias, categoria_id))['videos_categoria']
+    lt.addLast(videos_categoria, video)
+
 
 
 
@@ -148,13 +166,13 @@ def addPais(catalog, pais):
     lt.addLast(catalog['paises'], pais)
 
 
-
+#nuevo
 def MPaddPais(catalog, pais):
     videosPorPais = catalog['VideosPorPais']
     contiene = mp.contains(videosPorPais, pais)
     if not contiene:
         mp.put(videosPorPais, pais, lt.newList(datastructure='ARRAY_LIST'))
-
+#nuevo
 def MPaddVideoPorPais(catalog, video):
     paisVideo = video['country']
     mapa = catalog['VideosPorPais']
@@ -201,7 +219,7 @@ def categoria_presente(catalog, categoria_nombre:str):
     categoria_id = ''
     categorias = catalog['Categorias']
     for categoriaId in lt.iterator(mp.keySet(categorias)):
-        if me.getValue(mp.get(categorias,categoriaId)) == categoria_nombre:
+        if me.getValue(mp.get(categorias,categoriaId))['nombre_categoria'] == categoria_nombre:
             nombre_presente = True
             categoria_id = categoriaId
     return (nombre_presente, categoria_id)
@@ -226,7 +244,6 @@ def subListVideos_porCategoria(catalog, categoria_id:str):
 def subListVideos_porPais_Categoria(catalog, pais:str, categoria_id:str):
     mapa = catalog['VideosPorPais_y_CategoriaId']
     submapa = me.getValue(mp.get(mapa, pais))
-    print(mp.contains(submapa, categoria_id))
     videos = me.getValue(mp.get(submapa, categoria_id))
     return videos
 
@@ -322,7 +339,6 @@ def video_tiene_tag(video, tag:str):
         if tag in t:
             encontrado = True
             break
-
     return encontrado
 
 #antiguo

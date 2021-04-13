@@ -285,7 +285,7 @@ def getMostViewed_porPaisCategoria(catalog, categoria_id, pais):
 #-------------------------------------------
     videos = model.subListVideos_porPais_Categoria(catalog, pais, categoria_id)
     videos = ObtenerVideosDistintos(videos)
-    sortVideos(videos, 'merge', 'views')
+    sortVideos(videos, 'merge', 'vistas')
 #-------------------------------------------
     stop_memory = getMemory()
     stop_time = getTime()

@@ -135,7 +135,7 @@ while True:
             print('Las categorias cargadas son :')
             posicion_imprimir = 1
             for cate in lt.iterator(mp.keySet(categorias_mapa)):
-                print(str(posicion_imprimir),": " + "ID: " + str(cate) + "  ,  Nombre: " + me.getValue(mp.get(categorias_mapa, cate)))
+                print(str(posicion_imprimir),": " + "ID: " + str(cate) + "  ,  Nombre: " + me.getValue(mp.get(categorias_mapa, cate))['nombre_categoria'])
                 posicion_imprimir += 1
             primer_video = controller.primer_video(catalog)
             print('El primer video cargado es:')
@@ -358,19 +358,21 @@ los datos una vez de los archivos. \n Para recargar, reinicia la aplicación.')
         memoria = respuesta[2]
         mas_likeados = respuesta[0]
         contador = 0
-
+        print('--------------------------------------------------------------------------------------------------------------')
+        print('--------------------------------------------------------------------------------------------------------------')
         for video in lt.iterator(mas_likeados):
             contador += 1
             print(str(contador)+': '+'Titulo: '+(video['title']) + ' ,  Views: ' + str(video['views']) + ' , Trending date: '+
-            video['trending_date'] + ' , Título de canal: ' + video['channel_title'] + ' , Fecha publicación: ' + video['publish_time']+
-            ' , Likes: ' + video['likes'], + ' , Dislikes: ' + video['dislikes'])
+            str(video['trending_date']) + ' , Título de canal: ' + video['channel_title'] + ' , Fecha publicación: ' + str(video['publish_time'])+
+            ' , Likes: ' + str(video['likes']) + ' , Dislikes: ' + str(video['dislikes']))
             if contador >= tamaño_mostrar:
                 break
-
-        
+        print('--------------------------------------------------------------------------------------------------------------')
+        print('--------------------------------------------------------------------------------------------------------------')
         print("Tiempo [ms]: ", f"{tiempo:.3f}", "  ||  ",
               "Memoria [kB]: ", f"{memoria:.3f}")
-
+        print('--------------------------------------------------------------------------------------------------------------')
+        print('--------------------------------------------------------------------------------------------------------------')
 
     elif int(inputs[0])== 7:
         print("Información para el pais: ")
@@ -379,7 +381,11 @@ los datos una vez de los archivos. \n Para recargar, reinicia la aplicación.')
         func = controller.VideoTrendingPais(catalog, pais_R2)
         video = func[0]
         num_dias = func[1]
+        print('--------------------------------------------------------------------------------------------------------------')
+        print('--------------------------------------------------------------------------------------------------------------')
         printVideosTrendingPais(video, num_dias, pais_R2)
+        print('--------------------------------------------------------------------------------------------------------------')
+        print('--------------------------------------------------------------------------------------------------------------')
 
     elif int(inputs[0]) == 8:
         print('¿Para cuál categoría quiere obtener la información?')
