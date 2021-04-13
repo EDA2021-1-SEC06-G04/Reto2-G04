@@ -223,6 +223,16 @@ def ObtenerVideosDistintos(tad_lista):
     sortVideos(tad_lista, 'merge', "video_id")
     return model.ObtenerVideosDistintos(tad_lista)
 
+#nuevo:
+
+def ObtenerVideosDistintos_2(tad_lista):
+    """
+    Carga los distintos videos del archivo.
+    """
+    sortVideos(tad_lista, 'merge', "video_id")
+    return model.ObtenerVideosDistintos_2(tad_lista)
+
+
 #antiguo:
 def getMostTrending(catalog, pais):
     sublista = subListVideos_porPais(catalog['videos'], pais)
@@ -296,3 +306,9 @@ def getMostViewed_porPaisCategoria(catalog, categoria_id, pais):
 
     return videos, delta_time, delta_memory
 #quedó perfecta
+
+
+def getMostTrending_Categoria(catalog, categoria_id):
+    sublista = subListVideos_porCategoria(catalog, categoria_id)
+    sublista = ObtenerVideosDistintos_2(sublista)
+    return model.getMaxReps(sublista)
