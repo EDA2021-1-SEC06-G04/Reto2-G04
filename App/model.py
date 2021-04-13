@@ -254,7 +254,7 @@ def ObtenerVideosDistintos(tad_lista):
             
             for info in info_deseada:
                 video_agregar[info] = video[info]
-            if   lt.lastElement(videos_distintos)['video_id'] == video_agregar['video_id']:
+            if   lt.lastElement(videos_distintos)['video_id'] == video_agregar['video_id'] and lt.lastElement(videos_distintos)['country'] == video_agregar['country']:
                     lt.lastElement(videos_distintos)['repeticiones'] = lt.lastElement(videos_distintos)['repeticiones'] + 1
                     lt.lastElement(videos_distintos)['likes'] = max(int(video_agregar['likes']), int(lt.lastElement(videos_distintos)['likes']))
                     lt.lastElement(videos_distintos)['views'] = max(int(video_agregar['views']), int(lt.lastElement(videos_distintos)['views']))
@@ -289,6 +289,7 @@ def ObtenerVideosDistintos2(tad_lista):
                 lt.addLast(videos_distintos, video_agregar)
         leidos += 1
     return videos_distintos
+
 
 
 #antiguo
