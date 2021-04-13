@@ -62,6 +62,25 @@ def printVideosTrendingPais(video,num_dias, pais_R2):
     print('Número de días tendencia: '+ str(num_dias))
 
 
+def printVideosPorTagsR4(resultados, n):
+    if not lt.isEmpty(resultados):
+        print("Lista de " + str(n) + " videos con más likes para el tag y país dados: ")
+        contador = 0
+        for video in lt.iterator(resultados):
+            print("Título: " + video['title'])
+            print("Título del canal: " + video['channel_title'])
+            print("Fecha de publicación: " + video['publish_time'])
+            print("Views: " + str(video['views']))
+            print("Likes: " + str(video['likes']))
+            print("Dislikes: " + str(video['dislikes']))
+            print("Tags: " + str(video['tags']['elements']))
+            print("-------------------------------------------------------------------------------------")
+            contador += 1
+            if contador >= n:
+                break 
+    else:
+        print("Ningún video de este país tiene el tag especificado.")
+
 
 def printMenu():
     print("Bienvenido")
@@ -397,10 +416,11 @@ los datos una vez de los archivos. \n Para recargar, reinicia la aplicación.')
         print("¿Para qué país desea obtener información?")
         pais_R4 = input("")
         print("¿Cuántos videos quiere listar?")
-        n = input("")
+        n = int(input(""))
         print("Escoja un tag específico: ")
         tag = str(input(""))
-        
+        resultados = controller.masLikesPaisTag(catalog, pais_R4, tag)
+        printVideosPorTagsR4(resultados, n)
 
 
 

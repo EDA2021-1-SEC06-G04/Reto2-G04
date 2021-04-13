@@ -312,3 +312,11 @@ def getMostTrending_Categoria(catalog, categoria_id):
     sublista = subListVideos_porCategoria(catalog, categoria_id)
     sublista = ObtenerVideosDistintos_2(sublista)
     return model.getMaxReps(sublista)
+
+
+def masLikesPaisTag(catalog, pais, tag):
+    videos = model.subListPais(catalog, pais)
+    videos = subListVideos_porTag(videos, tag)
+    videos = ObtenerVideosDistintos(videos)
+    sortVideos(videos, 'merge', 'likes')
+    return videos

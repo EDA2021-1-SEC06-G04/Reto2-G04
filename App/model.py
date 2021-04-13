@@ -255,6 +255,13 @@ def subListVideos_porPais(tad_lista, pais:str):
             lt.addLast(sublist, video)
     return sublist
 
+#nuevo
+def subListPais(catalog, pais):
+    sublista = me.getValue(mp.get(catalog['VideosPorPais'], pais))
+    return sublista
+
+
+
 #antiguo
 def ObtenerVideosDistintos(tad_lista):
     # HAY QUE ORGANIZAR POR VIDEO ID ANTES DE USAR ESTA FUNCIÓN PARA QUE FUNCIONE !!!
@@ -455,4 +462,3 @@ def masLikesPaisTag(catalog, pais, n, tag):
     mapa = catalog['VideosPorPais']
     entry = mp.get(mapa)
     listaVideos = me.getValue(entry)
-    
