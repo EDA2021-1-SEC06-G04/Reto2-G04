@@ -254,7 +254,7 @@ def ObtenerVideosDistintos(tad_lista):
             
             for info in info_deseada:
                 video_agregar[info] = video[info]
-            if   lt.lastElement(videos_distintos)['video_id'] == video_agregar['video_id'] and lt.lastElement(videos_distintos)['country'] == video_agregar['country']:
+            if   lt.lastElement(videos_distintos)['video_id'] == video_agregar['video_id']:
                     lt.lastElement(videos_distintos)['repeticiones'] = lt.lastElement(videos_distintos)['repeticiones'] + 1
                     lt.lastElement(videos_distintos)['likes'] = max(int(video_agregar['likes']), int(lt.lastElement(videos_distintos)['likes']))
                     lt.lastElement(videos_distintos)['views'] = max(int(video_agregar['views']), int(lt.lastElement(videos_distintos)['views']))
@@ -266,10 +266,13 @@ def ObtenerVideosDistintos(tad_lista):
 
 #remix
 def ObtenerVideosDistintos_2(tad_lista):
-    # HAY QUE ORGANIZAR POR VIDEO ID ANTES DE USAR ESTA FUNCIÓN PARA QUE FUNCIONE !!!
+    # HAY QUE ORGANIZAR POR VIDEO ID Y 
+    # ANTES DE USAR ESTA FUNCIÓN PARA QUE FUNCIONE !!!
     videos_distintos = lt.newList(datastructure = 'ARRAY_LIST')
     primero = lt.firstElement(tad_lista)
     primero['repeticiones'] = 1
+    primero['lista_de_fechas'] = lt.newList(datastructure='ARRAY_LIST')
+    lt.addLast(primero['lista_de_fechas'], video_agregar['trending_date'])
     lt.addLast(videos_distintos, primero)
     leidos = 1
     for video in lt.iterator(tad_lista):
@@ -280,13 +283,20 @@ def ObtenerVideosDistintos_2(tad_lista):
             
             for info in info_deseada:
                 video_agregar[info] = video[info]
-            if   lt.lastElement(videos_distintos)['video_id'] == video_agregar['video_id'] and lt.lastElement(videos_distintos)['country'] == video_agregar['country']:
-                    lt.lastElement(videos_distintos)['repeticiones'] = lt.lastElement(videos_distintos)['repeticiones'] + 1
-                    lt.lastElement(videos_distintos)['likes'] = max(int(video_agregar['likes']), int(lt.lastElement(videos_distintos)['likes']))
-                    lt.lastElement(videos_distintos)['views'] = max(int(video_agregar['views']), int(lt.lastElement(videos_distintos)['views']))
+            ultimo_leido = lt.lastElement(videos_distintos)
+            if   ultimo_leido['video_id'] == video_agregar['video_id'] :
+                if not lt.isPresent(ultimo_leido['lista_de_fechas'], video_agregar['trending_dates']) :
+                        ultimo_leido['repeticiones'] = lt.lastElement(videos_distintos)['repeticiones'] + 1
+                        ultimo_leido['likes'] = max(int(video_agregar['likes']), int(ultimo_leido['likes']))
+                        ultimo_leido['views'] = max(int(video_agregar['views']), int(ultimo_leido['views']))
+                        lt.addLast(ultimo_leido['lista_de_fechas'], video_agregar['trending_date'])
+#               else: nada, ignorelo
             else :
                 video_agregar['repeticiones'] = 1
+                video_agregar['lista_de_fechas'] = lt.newList(datastructure='ARRAY_LIST')
+                lt.addLast(video_agregar['lista_de_fechas'], video_agregar['trending_date'])
                 lt.addLast(videos_distintos, video_agregar)
+                    
         leidos += 1
     return videos_distintos
 
