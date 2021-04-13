@@ -393,6 +393,14 @@ los datos una vez de los archivos. \n Para recargar, reinicia la aplicación.')
         print('Cargando información para la categoría...')
         
 
+    elif int(inputs[0])== 9:
+        print("¿Para qué país desea obtener información?")
+        pais_R4 = input("")
+        print("¿Cuántos videos quiere listar?")
+        n = input("")
+        print("Escoja un tag específico: ")
+        tag = str(input(""))
+        
 
 
 

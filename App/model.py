@@ -447,3 +447,12 @@ def sortList(tad_lista, metodo, orden='vistas'):
         quick.sort(tad_lista, funcion_comp)
     if metodo == "merge":
         merge.sort(tad_lista, funcion_comp)
+
+
+
+
+def masLikesPaisTag(catalog, pais, n, tag):
+    mapa = catalog['VideosPorPais']
+    entry = mp.get(mapa)
+    listaVideos = me.getValue(entry)
+    
