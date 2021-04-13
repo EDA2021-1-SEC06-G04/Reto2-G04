@@ -265,7 +265,7 @@ def ObtenerVideosDistintos(tad_lista):
     return videos_distintos
 
 #remix
-def ObtenerVideosDistintos2(tad_lista):
+def ObtenerVideosDistintos_2(tad_lista):
     # HAY QUE ORGANIZAR POR VIDEO ID ANTES DE USAR ESTA FUNCIÓN PARA QUE FUNCIONE !!!
     videos_distintos = lt.newList(datastructure = 'ARRAY_LIST')
     primero = lt.firstElement(tad_lista)
@@ -280,7 +280,7 @@ def ObtenerVideosDistintos2(tad_lista):
             
             for info in info_deseada:
                 video_agregar[info] = video[info]
-            if   lt.lastElement(videos_distintos)['video_id'] == video_agregar['video_id']:
+            if   lt.lastElement(videos_distintos)['video_id'] == video_agregar['video_id'] and lt.lastElement(videos_distintos)['country'] == video_agregar['country']:
                     lt.lastElement(videos_distintos)['repeticiones'] = lt.lastElement(videos_distintos)['repeticiones'] + 1
                     lt.lastElement(videos_distintos)['likes'] = max(int(video_agregar['likes']), int(lt.lastElement(videos_distintos)['likes']))
                     lt.lastElement(videos_distintos)['views'] = max(int(video_agregar['views']), int(lt.lastElement(videos_distintos)['views']))
