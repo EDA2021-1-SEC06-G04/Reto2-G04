@@ -322,6 +322,7 @@ def ObtenerVideosDistintos_2(tad_lista):
 #antiguo
 def getMaxReps(sublista):
 #solo funciona despues de haber usado ObtenerVideosDistintos
+#u ObtenerVideosDistintos2
     if not lt.isEmpty(sublista):
         maximo_valor = 0
         maximo_apuntador = lt.firstElement(sublista)
