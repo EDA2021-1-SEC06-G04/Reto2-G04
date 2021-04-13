@@ -408,7 +408,7 @@ los datos una vez de los archivos. \n Para recargar, reinicia la aplicación.')
         print("El video de la categoria {} que mas días distintos fue trending en el mundo es:".format(categoria_nombre))
         print('Titulo: '+(video['title']) + ', Título de canal: ' + video['channel_title'] + ', ID de Categoria: ' + 
         video['category_id'])
-        print('Estuvo en tendencia {} dias distintos'.format(str(N_dias))
+        print('Estuvo en tendencia {} dias distintos'.format(str(N_dias)))
         print('--------------------------------------------------------------------------------------------------------------')
         print('--------------------------------------------------------------------------------------------------------------')
         
