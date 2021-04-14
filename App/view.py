@@ -69,6 +69,7 @@ def printVideosPorTagsR4(resultados, n):
         
         for video in lt.iterator(resultados):
             print("----------------------------------------------------------------------------------------------------------------------------------------------------------")
+            print(str(contador+1)+':')
             print("Título: " + video['title'])
             print("Título del canal: " + video['channel_title'])
             print("Fecha de publicación: " + video['publish_time'])
@@ -434,6 +435,13 @@ los datos una vez de los archivos. \n Para recargar, reinicia la aplicación.')
         N_dias = resultado[0][1]
         tiempo = resultado[1]
         memoria = resultado[2]
+        print('¿Quieres ver las fechas del video?')
+        print('1:Si')
+        print('2:No')
+        imprimir_fechas = False
+        r = input('')
+        if r=='1':
+            imprimir_fechas = True
         print('--------------------------------------------------------------------------------------------------------------')
         print('--------------------------------------------------------------------------------------------------------------')
         print("El video de la categoria {} que mas días distintos fue trending en el mundo es:".format(categoria_nombre))
@@ -444,7 +452,9 @@ los datos una vez de los archivos. \n Para recargar, reinicia la aplicación.')
         print('--------------------------------------------------------------------------------------------------------------')
         print("Tiempo [ms]: ", f"{tiempo:.3f}", "  ||  ",
               "Memoria [kB]: ", f"{memoria:.3f}")
-        print(video['lista_de_fechas']['elements'])
+        if imprimir_fechas:
+
+            print(video['lista_de_fechas']['elements'])
         print('--------------------------------------------------------------------------------------------------------------')
         print('--------------------------------------------------------------------------------------------------------------')
         
