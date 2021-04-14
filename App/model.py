@@ -59,6 +59,7 @@ def newCatalog(estructura, metodo_colision, factor_carga):
     
 
     #        
+
     catalog['Categorias'] = mp.newMap(maptype=metodo_colision, loadfactor=factor_carga,
     comparefunction=MAPcompareCategoriesById)
     #map : hash table, donde las llaves son dadas por las categorias y los valores son diccionarios que tienen:
