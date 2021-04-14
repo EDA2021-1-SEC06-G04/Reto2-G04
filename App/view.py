@@ -66,8 +66,9 @@ def printVideosPorTagsR4(resultados, n):
     if not lt.isEmpty(resultados):
         print("Lista de " + str(n) + " videos con más likes para el tag y país dados: ")
         contador = 0
-        print("----------------------------------------------------------------------------------------------------------------------------------------------------------")
+        
         for video in lt.iterator(resultados):
+            print("----------------------------------------------------------------------------------------------------------------------------------------------------------")
             print("Título: " + video['title'])
             print("Título del canal: " + video['channel_title'])
             print("Fecha de publicación: " + video['publish_time'])
@@ -75,7 +76,7 @@ def printVideosPorTagsR4(resultados, n):
             print("Likes: " + str(video['likes']))
             print("Dislikes: " + str(video['dislikes']))
             print("Tags: " + str(video['tags']['elements']))
-            print("---------------------------------------------------------------------------------------------------------------------------------------------------")
+            
             contador += 1
             if contador >= n:
                 break 
@@ -382,12 +383,15 @@ los datos una vez de los archivos. \n Para recargar, reinicia la aplicación.')
         print('--------------------------------------------------------------------------------------------------------------')
         for video in lt.iterator(mas_likeados):
             contador += 1
-            print(str(contador)+': '+'Titulo: '+(video['title']) + ' ,  Views: ' + str(video['views']) + ' , Trending date: '+
-            str(video['trending_date']) + ' , Título de canal: ' + video['channel_title'] + ' , Fecha publicación: ' + str(video['publish_time'])+
-            ' , Likes: ' + str(video['likes']) + ' , Dislikes: ' + str(video['dislikes']))
+            print(str(contador)+': '+'Titulo: '+(video['title']))
+            print(' Views: ' + str(video['views'])) 
+            print('Trending date: '+ str(video['trending_date']))
+            print('Título de canal: ' + video['channel_title'])
+            print('Fecha publicación: ' + str(video['publish_time']))
+            print('Likes: ' + str(video['likes'])) 
+            print('Dislikes: ' + str(video['dislikes']))
             if contador >= tamaño_mostrar:
                 break
-        print('--------------------------------------------------------------------------------------------------------------')
         print('--------------------------------------------------------------------------------------------------------------')
         print("Tiempo [ms]: ", f"{tiempo:.3f}", "  ||  ",
               "Memoria [kB]: ", f"{memoria:.3f}")
@@ -395,15 +399,20 @@ los datos una vez de los archivos. \n Para recargar, reinicia la aplicación.')
         print('--------------------------------------------------------------------------------------------------------------')
 
     elif int(inputs[0])== 7:
-        print("Información para el pais: ")
+        print("¿Para cuál país quiere obtener la información? ")
         pais_R2 = input("")
         print('Cargando informacion, por favor espera...')
         func = controller.VideoTrendingPais(catalog, pais_R2)
-        video = func[0]
-        num_dias = func[1]
+        video = func[0][0]
+        num_dias = func[0][1]
+        tiempo = func[1]
+        memoria = func[2]
         print('--------------------------------------------------------------------------------------------------------------')
         print('--------------------------------------------------------------------------------------------------------------')
         printVideosTrendingPais(video, num_dias, pais_R2)
+        print('--------------------------------------------------------------------------------------------------------------')
+        print("Tiempo [ms]: ", f"{tiempo:.3f}", "  ||  ",
+              "Memoria [kB]: ", f"{memoria:.3f}")
         print('--------------------------------------------------------------------------------------------------------------')
         print('--------------------------------------------------------------------------------------------------------------')
 
@@ -421,14 +430,21 @@ los datos una vez de los archivos. \n Para recargar, reinicia la aplicación.')
         
         print('Cargando información para la categoría...')
         resultado = controller.getMostTrending_Categoria(catalog, categoria_id)
-        video = resultado[0]
-        N_dias = resultado[1]
+        video = resultado[0][0]
+        N_dias = resultado[0][1]
+        tiempo = resultado[1]
+        memoria = resultado[2]
         print('--------------------------------------------------------------------------------------------------------------')
         print('--------------------------------------------------------------------------------------------------------------')
         print("El video de la categoria {} que mas días distintos fue trending en el mundo es:".format(categoria_nombre))
-        print('Titulo: '+(video['title']) + ', Título de canal: ' + video['channel_title'] + ', ID de Categoria: ' + 
-        video['category_id'])
+        print('Titulo: '+(video['title']))
+        print('Título de canal: ' + video['channel_title'])
+        print('ID de Categoria: ' + str(video['category_id']))
         print('Estuvo en tendencia {} dias distintos'.format(str(N_dias)))
+        print('--------------------------------------------------------------------------------------------------------------')
+        print("Tiempo [ms]: ", f"{tiempo:.3f}", "  ||  ",
+              "Memoria [kB]: ", f"{memoria:.3f}")
+        print(video['lista_de_fechas']['elements'])
         print('--------------------------------------------------------------------------------------------------------------')
         print('--------------------------------------------------------------------------------------------------------------')
         
@@ -444,7 +460,15 @@ los datos una vez de los archivos. \n Para recargar, reinicia la aplicación.')
         print("Escoja un tag específico: ")
         tag = str(input(""))
         resultados = controller.masLikesPaisTag(catalog, pais_R4, tag)
-        printVideosPorTagsR4(resultados, n)
+        videos = resultados[0]
+        tiempo = resultados[1]
+        memoria = resultados[2]
+        printVideosPorTagsR4(videos, n)
+        print('--------------------------------------------------------------------------------------------------------------')
+        print("Tiempo [ms]: ", f"{tiempo:.3f}", "  ||  ",
+              "Memoria [kB]: ", f"{memoria:.3f}")
+        print('--------------------------------------------------------------------------------------------------------------')
+        print('--------------------------------------------------------------------------------------------------------------')
 
 
 

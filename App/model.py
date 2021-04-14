@@ -66,8 +66,6 @@ def newCatalog(estructura, metodo_colision, factor_carga):
     # los NOMBRES DE LAS CATEGORIAS
     # lista de videos de la categoria
 
-    catalog['VideosPorId'] = mp.newMap(maptype=metodo_colision, loadfactor=factor_carga,
-    comparefunction=MAPcompareVideosById)
 #map : hash table, donde las llaves son dadas por las video_id y los valores de cada llave son videos,
 #  donde un video es una linea del csv (los mismos elementos de catalog['videos'])
 #en otras palabras estos son los videos unicos
@@ -88,9 +86,6 @@ def newCatalog(estructura, metodo_colision, factor_carga):
 def addVideo(catalog, video):
     # Se adiciona el video a la lista de videos
     lt.addLast(catalog['videos'], video)
-
-    # agrega video al mapa videos por Id
-    mp.put(catalog['VideosPorId'], video['video_id'], video)
 
     addVideo_a_Categoria(catalog, video)
 
@@ -237,7 +232,7 @@ def categoria_presente(catalog, categoria_nombre:str):
 def subListVideos_porCategoria(catalog, categoria_id:str):
     categorias = catalog['Categorias']
     entry = mp.get(categorias, categoria_id)
-    videos = me.getValue(entry)['videos']
+    videos = me.getValue(entry)['videos_categoria']
     return videos
 
 #nuevo:
@@ -296,7 +291,7 @@ def ObtenerVideosDistintos_2(tad_lista):
     primero = lt.firstElement(tad_lista)
     primero['repeticiones'] = 1
     primero['lista_de_fechas'] = lt.newList(datastructure='ARRAY_LIST')
-    lt.addLast(primero['lista_de_fechas'], video_agregar['trending_date'])
+    lt.addLast(primero['lista_de_fechas'], primero['trending_date'])
     lt.addLast(videos_distintos, primero)
     leidos = 1
     for video in lt.iterator(tad_lista):
@@ -309,7 +304,7 @@ def ObtenerVideosDistintos_2(tad_lista):
                 video_agregar[info] = video[info]
             ultimo_leido = lt.lastElement(videos_distintos)
             if   ultimo_leido['video_id'] == video_agregar['video_id'] :
-                if not lt.isPresent(ultimo_leido['lista_de_fechas'], video_agregar['trending_dates']) :
+                if not lt.isPresent(ultimo_leido['lista_de_fechas'], video_agregar['trending_date']) :
                         ultimo_leido['repeticiones'] = lt.lastElement(videos_distintos)['repeticiones'] + 1
                         ultimo_leido['likes'] = max(int(video_agregar['likes']), int(ultimo_leido['likes']))
                         ultimo_leido['views'] = max(int(video_agregar['views']), int(ultimo_leido['views']))

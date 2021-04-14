@@ -210,10 +210,7 @@ def categoria_presente(catalog, categoria):
     categoria = str(categoria).lower()
     return model.categoria_presente(catalog, categoria)
 
-#nuevo 
-def VideoTrendingPais(catalog, pais):
-    video = model.VideoTrendingPais(catalog, pais)
-    return video
+
 
 #antiguo:
 def ObtenerVideosDistintos(tad_lista):
@@ -279,7 +276,7 @@ def subListVideos_porCategoria(catalog, categoria_id):
 
     return videos, delta_time, delta_memory
 
-
+#REQ1
 #nuevo:
 def getMostViewed_porPaisCategoria(catalog, categoria_id, pais):
 
@@ -305,18 +302,81 @@ def getMostViewed_porPaisCategoria(catalog, categoria_id, pais):
     delta_memory = deltaMemory(start_memory, stop_memory)
 
     return videos, delta_time, delta_memory
-#quedó perfecta
 
+#REQ2
+#nuevo 
+def VideoTrendingPais(catalog, pais):
+    
+    #medir tiempo y memoria:
+    
+    delta_time = -1.0
+    delta_memory = -1.0
 
+    tracemalloc.start()
+    start_time = getTime()
+    start_memory = getMemory()
+
+#-------------------------------------------
+    video = model.VideoTrendingPais(catalog, pais)
+#-------------------------------------------
+    stop_memory = getMemory()
+    stop_time = getTime()
+    tracemalloc.stop()
+
+    delta_time = stop_time - start_time
+    delta_memory = deltaMemory(start_memory, stop_memory)
+    return video, delta_time, delta_memory
+
+#REQ3
+#nuevo
 def getMostTrending_Categoria(catalog, categoria_id):
-    sublista = subListVideos_porCategoria(catalog, categoria_id)
+    
+    #medir tiempo y memoria:
+    
+    delta_time = -1.0
+    delta_memory = -1.0
+
+    tracemalloc.start()
+    start_time = getTime()
+    start_memory = getMemory()
+
+#-------------------------------------------
+    sublista = model.subListVideos_porCategoria(catalog, categoria_id)
     sublista = ObtenerVideosDistintos_2(sublista)
-    return model.getMaxReps(sublista)
+#-------------------------------------------
+    stop_memory = getMemory()
+    stop_time = getTime()
+    tracemalloc.stop()
+
+    delta_time = stop_time - start_time
+    delta_memory = deltaMemory(start_memory, stop_memory)
+
+    return model.getMaxReps(sublista), delta_time, delta_memory
 
 
+#REQ4
+#nuevo
 def masLikesPaisTag(catalog, pais, tag):
+    
+    #medir tiempo y memoria:
+    
+    delta_time = -1.0
+    delta_memory = -1.0
+
+    tracemalloc.start()
+    start_time = getTime()
+    start_memory = getMemory()
+
+#-------------------------------------------
     videos = model.subListPais(catalog, pais)
     videos = subListVideos_porTag(videos, tag)
     videos = ObtenerVideosDistintos(videos)
     sortVideos(videos, 'merge', 'likes')
-    return videos
+#-------------------------------------------
+    stop_memory = getMemory()
+    stop_time = getTime()
+    tracemalloc.stop()
+
+    delta_time = stop_time - start_time
+    delta_memory = deltaMemory(start_memory, stop_memory)
+    return videos, delta_time, delta_memory
