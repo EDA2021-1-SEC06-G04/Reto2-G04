@@ -459,7 +459,6 @@ los datos una vez de los archivos. \n Para recargar, reinicia la aplicación.')
         print('--------------------------------------------------------------------------------------------------------------')
         
 
-
         
 
     elif int(inputs[0])== 9:
